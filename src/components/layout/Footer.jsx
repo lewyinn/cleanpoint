@@ -1,3 +1,6 @@
+import { Link } from 'react-scroll';
+import Logo from '../../../public/assets/Logo.png';
+
 export default function Footer() {
     return (
         <footer className="bg-gray-900 text-white">
@@ -6,10 +9,8 @@ export default function Footer() {
                     {/* CleanPoint Info */}
                     <div>
                         <div className="flex items-center space-x-2 mb-4">
-                            <div className="w-8 h-8 bg-emerald-700 rounded-lg flex items-center justify-center">
-                                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                </svg>
+                            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                                <img src={Logo.src} alt="CleanPoint Logo" className="w-6 h-6"/>
                             </div>
                             <span className="text-xl font-bold">CleanPoint</span>
                         </div>
@@ -23,24 +24,36 @@ export default function Footer() {
                         <h3 className="font-semibold text-lg mb-4">Navigasi Cepat</h3>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <Link to='home' 
+                                    smooth
+                                    spy offset={-800} duration={600} activeClass='active'
+                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
                                     Beranda
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#cara-kerja" className="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <Link to='works' 
+                                    smooth
+                                    spy offset={-800} duration={600} activeClass='active'
+                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
                                     How It Works
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#impact" className="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <Link to='impact' 
+                                    smooth
+                                    spy offset={-800} duration={600} activeClass='active'
+                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
                                     Impact Real
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#benefits" className="text-gray-400 hover:text-emerald-400 transition-colors">
+                                <Link to='benefits' 
+                                    smooth
+                                    spy offset={-800} duration={600} activeClass='active'
+                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
                                     Benefits
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -95,7 +108,7 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-gray-800 mt-12 pt-8">
                     <p className="text-center text-gray-500 text-sm">
-                        © 2025 CleanPoint. All rights reserved
+                        © 2026 CleanPoint. All rights reserved
                     </p>
                 </div>
             </div>
