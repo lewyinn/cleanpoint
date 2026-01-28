@@ -1,10 +1,55 @@
+"use client";
 import Footer from '@/components/layout/Footer'
 import Navbar from '@/components/layout/Navbar'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const page = () => {
+    const [reports, setReports] = useState([]);
+    const [query, setQuery] = useState("");
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const [sort, setSort] = useState("newest");
+
+    const filteredReports = reports.filter((r) => {
+        const matchQuery =
+            r.title.toLowerCase().includes(query.toLowerCase()) ||
+            r.location?.address?.toLowerCase().includes(query.toLowerCase());
+
+        const matchCategory =
+            selectedCategories.length === 0 ||
+            selectedCategories.includes(r.category);
+
+        const matchStatus =
+            selectedStatuses.length === 0 ||
+            selectedStatuses.includes(r.status);
+
+
+
+        return matchQuery && matchCategory && matchStatus;
+    });
+
+    const sortedReports = [...filteredReports].sort((a, b) => {
+        if (sort === "newest") {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+        if (sort === "oldest") {
+            return new Date(a.createdAt) - new Date(b.createdAt);
+        }
+        if (sort === "done") {
+            return b.status === "Selesai" ? 1 : -1;
+        }
+        return 0;
+    });
+
+
+    useEffect(() => {
+        fetch("/api/reports")
+            .then(res => res.json())
+            .then(setReports)
+    }, [])
+
     return (
         <main className="min-h-screen bg-white">
             <Navbar />
@@ -63,11 +108,7 @@ const page = () => {
                                 type="text"
                                 placeholder="Cari judul laporan atau lokasi"
                                 className="input"
-                            />
-                            <input
-                                type="text"
-                                placeholder="Masukkan kota atau kecamatan"
-                                className="input"
+                                onChange={(e) => setQuery(e.target.value)}
                             />
                             <button className="btn-primary rounded-full px-8">
                                 Cari
@@ -106,6 +147,15 @@ const page = () => {
                                     <input
                                         type="checkbox"
                                         className="accent-[#007E5B]"
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelectedCategories([...selectedCategories, item]);
+                                            } else {
+                                                setSelectedCategories(
+                                                    selectedCategories.filter((c) => c !== item)
+                                                );
+                                            }
+                                        }}
                                     />
                                     {item}
                                 </label>
@@ -120,6 +170,15 @@ const page = () => {
                                         <input
                                             type="checkbox"
                                             className="accent-[#007E5B]"
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setSelectedStatuses([...selectedStatuses, status]);
+                                                } else {
+                                                    setSelectedStatuses(
+                                                        selectedStatuses.filter((s) => s !== status)
+                                                    );
+                                                }
+                                            }}
                                         />
                                         {status}
                                     </label>
@@ -132,37 +191,37 @@ const page = () => {
                     <section className="lg:col-span-3">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="text-lg font-semibold text-[#007E5B]">Laporan Terbaru</h3>
-                            <select className="border rounded-lg px-3 py-2 text-sm text-gray-700">
-                                <option>Terbaru</option>
-                                <option>Terlama</option>
-                                <option>Status Selesai</option>
+                            <select className="border rounded-lg px-3 py-2 text-sm text-gray-700"
+                                onChange={(e) => setSort(e.target.value)}>
+                                <option value="newest">Terbaru</option>
+                                <option value="oldest">Terlama</option>
+                                <option value="done">Status Selesai</option>
                             </select>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {[1, 2, 3, 4, 5, 6].map((i) => (
-                                <div
-                                    key={i}
-                                    className="bg-white border rounded-2xl p-6 hover:shadow-md transition cursor-pointer">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <h4 className="font-semibold text-lg text-emerald-800">
-                                            Sampah Menumpuk di Sungai
-                                        </h4>
-                                        <span className="text-xs px-3 py-1 rounded-full bg-yellow-50 text-yellow-700">
-                                            Diproses
+                            {sortedReports.map((r) => (
+                                <Link
+                                    href={`/laporan/${r._id}`}
+                                    key={r._id}
+                                    className="border rounded-2xl p-6 hover:shadow-md transition"
+                                >
+                                    <div className="flex justify-between mb-2">
+                                        <h3 className="font-semibold text-lg">{r.title}</h3>
+                                        <span className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                                            {r.status}
                                         </span>
                                     </div>
 
-                                    <p className="text-gray-600 text-sm mb-4">
-                                        Terdapat tumpukan sampah rumah tangga yang menghambat
-                                        aliran sungai dan menyebabkan bau tidak sedap.
+                                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                                        {r.description}
                                     </p>
 
-                                    <div className="flex justify-between items-center text-sm text-gray-500">
-                                        <span>📍 Kecamatan Sukamaju</span>
-                                        <span>2 hari lalu</span>
+                                    <div className="flex justify-between text-xs text-gray-500">
+                                        <span>{r.location?.address}</span>
+                                        <span>{new Date(r.createdAt).toLocaleDateString()}</span>
                                     </div>
-                                </div>
+                                </Link>
                             ))}
                         </div>
                     </section>

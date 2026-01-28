@@ -419,9 +419,9 @@ export default function Home() {
 
               {/* Title */}
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#007E5B] leading-tight">
-                Kenapa Harus Melapor di
+                Kenapa Harus Melapor di <span className="md:hidden text-gray-900">Sini?</span>
               </h2>
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mt-2">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mt-2 hidden md:block">
                 Sini?
               </h3>
             </div>
