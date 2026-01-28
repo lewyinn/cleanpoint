@@ -1,5 +1,9 @@
+"use client";
+
 import { Link } from 'react-scroll';
+import NextLink from "next/link";
 import Logo from '../../../public/assets/Logo.png';
+import Image from 'next/image';
 
 export default function Footer() {
     return (
@@ -8,12 +12,12 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
                     {/* CleanPoint Info */}
                     <div>
-                        <div className="flex items-center space-x-2 mb-4">
+                        <NextLink href='/' className="flex items-center space-x-2 mb-4">
                             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                                <img src={Logo.src} alt="CleanPoint Logo" className="w-6 h-6"/>
+                                <Image src={Logo.src} width={24} height={24} alt="CleanPoint Logo" className="w-6 h-6"/>
                             </div>
                             <span className="text-xl font-bold">CleanPoint</span>
-                        </div>
+                        </NextLink>
                         <p className="text-gray-400 text-sm leading-relaxed">
                             CleanPoint adalah platform digital inovatif untuk melaporkan masalah lingkungan secara cepat dan mudah.
                         </p>

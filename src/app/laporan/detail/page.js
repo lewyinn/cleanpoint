@@ -18,7 +18,6 @@ export default function DetailLaporanPage() {
                             Kembali ke Halaman Utama
                         </Link>
                     </div>
-
                     <span className="inline-block mb-4 px-4 py-1.5 text-sm rounded-full bg-[#E6F4EF] text-[#007E5B]">
                         Sampah Menumpuk
                     </span>
