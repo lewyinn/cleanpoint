@@ -69,14 +69,14 @@ const Navbar = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
-                    <ScrollLink to="beranda" smooth spy offset={-80} className="flex items-center gap-2 cursor-pointer">
+                    <NextLink href="/" className="flex items-center gap-2 cursor-pointer">
                         <div className="w-10 h-10 md:w-12 md:h-12">
-                            <Image src={Logo} alt="CleanPoint Logo" priority className="w-full h-full"/>
+                            <Image src={Logo} alt="CleanPoint Logo" priority className="w-full h-full" />
                         </div>
                         <span className="text-xl md:text-2xl font-bold text-[#007E5B]">
                             CleanPoint
                         </span>
-                    </ScrollLink>
+                    </NextLink>
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center gap-8">
@@ -92,12 +92,17 @@ const Navbar = () => {
 
                     {/* Desktop CTA */}
                     <div className="hidden md:block">
-                        <NextLink
-                            href="https://wa.me/6285282932422?text=Halo%20Brandly,%20saya%20mau%20konsultasi%20tentang%20website%20anda."
-                            className="cursor-pointer bg-[#007E5B] rounded-full flex justify-center items-center gap-2 py-2 pl-8 pr-2">
-                            <span className="text-white text-base font-medium items-center">Hubungi Kami</span>
-                            <span className="text-xl bg-white px-2 py-2 rounded-full text-center text-black"><MoveUpRight /></span>
+                        <NextLink target="_blank" href="https://wa.me/6285282932422?text=Halo%20Brandly,%20saya%20mau%20konsultasi%20tentang%20website%20anda."
+                            className="group cursor-pointer bg-[#007E5B] hover:bg-[#00684B] transition-all duration-300 rounded-full flex justify-center items-center gap-3 py-2 pl-8 pr-2 shadow-sm hover:shadow-md">
+                            <span className="text-white text-base font-medium">
+                                Hubungi Kami
+                            </span>
+
+                            <span className="text-xl bg-white px-2 py-2 rounded-full text-black transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:rotate-1 ">
+                                <MoveUpRight />
+                            </span>
                         </NextLink>
+
                     </div>
 
                     {/* Mobile Toggle */}
