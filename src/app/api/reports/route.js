@@ -19,7 +19,10 @@ export async function POST(req) {
             category: formData.get("category"),
             title: formData.get("title"),
             description: formData.get("description"),
-            status: "Menunggu Ditinjau",
+            location: {
+                address: formData.get("address"),
+            },
+            status: "Sedang Ditinjau",
             createdAt: new Date(),
         };
 
