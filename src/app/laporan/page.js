@@ -1,49 +1,56 @@
 "use client";
+
 import Footer from '@/components/layout/Footer'
 import Navbar from '@/components/layout/Navbar'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-const page = () => {
-    const [reports, setReports] = useState([]);
-    const [query, setQuery] = useState("");
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedStatuses, setSelectedStatuses] = useState([]);
-    const [sort, setSort] = useState("newest");
+const Page = () => {
+    const [reports, setReports] = useState([])
+    const [query, setQuery] = useState("")
+    const [selectedCategories, setSelectedCategories] = useState([])
+    const [selectedStatuses, setSelectedStatuses] = useState([])
+    const [sort, setSort] = useState("newest")
 
+    // ================= HELPER =================
+    const toggleArrayValue = (arr, value) =>
+        arr.includes(value)
+            ? arr.filter((v) => v !== value)
+            : [...arr, value]
+
+    // ================= FILTER =================
     const filteredReports = reports.filter((r) => {
         const matchQuery =
-            r.title.toLowerCase().includes(query.toLowerCase()) ||
-            r.location?.address?.toLowerCase().includes(query.toLowerCase());
+            r.title?.toLowerCase().includes(query.toLowerCase()) ||
+            r.location?.address?.toLowerCase().includes(query.toLowerCase())
 
         const matchCategory =
             selectedCategories.length === 0 ||
-            selectedCategories.includes(r.category);
+            selectedCategories.includes(r.category)
 
         const matchStatus =
             selectedStatuses.length === 0 ||
-            selectedStatuses.includes(r.status);
+            selectedStatuses.includes(r.status)
 
+        return matchQuery && matchCategory && matchStatus
+    })
 
-
-        return matchQuery && matchCategory && matchStatus;
-    });
-
+    // ================= SORT =================
     const sortedReports = [...filteredReports].sort((a, b) => {
         if (sort === "newest") {
-            return new Date(b.createdAt) - new Date(a.createdAt);
+            return new Date(b.createdAt) - new Date(a.createdAt)
         }
         if (sort === "oldest") {
-            return new Date(a.createdAt) - new Date(b.createdAt);
+            return new Date(a.createdAt) - new Date(b.createdAt)
         }
         if (sort === "done") {
-            return b.status === "Selesai" ? 1 : -1;
+            return a.status === "Selesai" ? -1 : 1
         }
-        return 0;
-    });
+        return 0
+    })
 
-
+    // ================= FETCH =================
     useEffect(() => {
         fetch("/api/reports")
             .then(res => res.json())
@@ -54,150 +61,136 @@ const page = () => {
         <main className="min-h-screen bg-white">
             <Navbar />
 
-            {/* ================= HEADER (JANGAN DIUBAH) ================= */}
-            <section
-                id="home"
-                className="pt-24 md:pt-44 pb-12 md:pb-20 px-4 sm:px-6 lg:px-8 bg-white"
-            >
-                <div className="max-w-7xl mx-auto">
-                    <section className="flex flex-col bg-white">
-                        {/* Kembali */}
-                        <div className="flex items-start mb-8">
-                            <Link href="/" className="btn-primary flex items-center gap-2">
-                                <ArrowLeft size={18} />
-                                Kembali ke Halaman Utama
-                            </Link>
-                        </div>
-
-                        {/* Badge */}
-                        <div className="flex justify-center mb-6">
-                            <span className="px-4 py-2 border border-black rounded-full text-sm text-black">
-                                Cari & Pantau Laporan Anda
-                            </span>
-                        </div>
-
-                        {/* Main Heading */}
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="text-center mb-2 max-w-5xl">
-                                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-[#007E5B] mb-4">
-                                    Lihat Progres Penanganan Masalah{' '}
-                                    <span className="bg-[#007E5B] text-white px-3 py-1 rounded-lg inline-block">
-                                        Lingkungan
-                                    </span>
-                                </h1>
-                            </div>
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-center text-gray-600 max-w-4xl mx-auto mb-8 text-base md:text-xl leading-relaxed">
-                            Gunakan fitur pencarian ini untuk memantau laporan yang telah Anda
-                            kirim atau melihat laporan warga lainnya. Dengan sistem yang
-                            transparan, Anda dapat mengetahui status terbaru dari setiap
-                            laporan lingkungan secara real-time.
-                        </p>
-                    </section>
-                </div>
+            {/* ================= HEADER ================= */}
+            <section id="home" className="pt-24 md:pt-44 pb-12 md:pb-20 px-4 sm:px-6 lg:px-8 bg-white"> 
+                <div className="max-w-7xl mx-auto"> 
+                    <section className="flex flex-col bg-white"> 
+                        {/* Kembali */} 
+                        <div className="flex items-start mb-8"> 
+                            <Link href="/" className="btn-primary flex items-center gap-2"> 
+                                <ArrowLeft size={18} /> Kembali ke Halaman Utama 
+                            </Link> 
+                        </div> 
+                        {/* Badge */} 
+                        <div className="flex justify-center mb-6"> 
+                            <span className="px-4 py-2 border border-black rounded-full text-sm text-black"> 
+                                Cari & Pantau Laporan Anda 
+                            </span> 
+                        </div> 
+                        {/* Main Heading */} 
+                        <div className="flex flex-col justify-center items-center"> 
+                            <div className="text-center mb-2 max-w-5xl"> 
+                                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-[#007E5B] mb-4"> 
+                                    Lihat Progres Penanganan Masalah{' '} 
+                                    <span className="bg-[#007E5B] text-white px-3 py-1 rounded-lg inline-block"> Lingkungan </span> 
+                                </h1> 
+                            </div> 
+                        </div> 
+                        {/* Description */} 
+                        <p className="text-center text-gray-600 max-w-4xl mx-auto mb-8 text-base md:text-xl leading-relaxed"> 
+                            Gunakan fitur pencarian ini untuk memantau laporan yang telah Anda kirim atau melihat laporan warga lainnya.
+                            Dengan sistem yang transparan, Anda dapat mengetahui status terbaru dari setiap laporan lingkungan secara real-time.
+                        </p> 
+                    </section> 
+                </div> 
             </section>
 
             {/* ================= SEARCH ================= */}
-            <section className="px-4 sm:px-6 lg:px-8 mb-12">
+            <section className="px-4 mb-10">
                 <div className="max-w-7xl mx-auto">
-                    <div className="bg-white border rounded-2xl p-4 md:p-6">
-                        <div className="flex flex-col md:flex-row gap-3">
-                            <input
-                                type="text"
-                                placeholder="Cari judul laporan atau lokasi"
-                                className="input"
-                                onChange={(e) => setQuery(e.target.value)}
-                            />
-                            <button className="btn-primary rounded-full px-8">
-                                Cari
-                            </button>
-                        </div>
-                    </div>
+                    <input
+                        type="text"
+                        placeholder="Cari judul laporan atau alamat"
+                        className="input w-full"
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
                 </div>
             </section>
 
             {/* ================= CONTENT ================= */}
-            <section className="px-4 sm:px-6 lg:px-8 pb-20">
+            <section className="px-4 pb-20">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
 
-                    {/* FILTER */}
-                    <aside className="lg:col-span-1 bg-white border rounded-2xl p-6">
-                        <div className="flex justify-between items-center mb-5">
-                            <h3 className="font-semibold text-lg text-[#007E5B]">Jenis Masalah</h3>
-                            <button className="text-sm text-[#007E5B] hover:underline">
+                    {/* ================= FILTER ================= */}
+                    <aside className="lg:col-span-1 border rounded-2xl p-6">
+                        <div className="flex justify-between mb-4">
+                            <h3 className="font-semibold text-lg text-[#007E5B]">
+                                Filter
+                            </h3>
+                            <button
+                                onClick={() => {
+                                    setSelectedCategories([])
+                                    setSelectedStatuses([])
+                                }}
+                                className="text-sm text-[#007E5B] hover:underline"
+                            >
                                 Reset
                             </button>
                         </div>
 
-                        <div className="space-y-3 text-sm text-gray-700">
-                            {[
-                                'Semua',
-                                'Sampah',
-                                'Pencemaran',
-                                'Drainase',
-                                'Jalan Rusak',
-                                'Pohon Tumbang',
-                            ].map((item) => (
-                                <label
-                                    key={item}
-                                    className="flex items-center gap-3 cursor-pointer"
-                                >
+                        {/* KATEGORI */}
+                        <div className="mb-6 text-neutral-500">
+                            <h4 className="font-semibold mb-3">Jenis Masalah</h4>
+                            {['Sampah', 'Pencemaran', 'Drainase'].map((item) => (
+                                <label key={item} className="flex items-center gap-3 mb-2">
                                     <input
                                         type="checkbox"
                                         className="accent-[#007E5B]"
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                setSelectedCategories([...selectedCategories, item]);
-                                            } else {
-                                                setSelectedCategories(
-                                                    selectedCategories.filter((c) => c !== item)
-                                                );
-                                            }
-                                        }}
+                                        checked={selectedCategories.includes(item)}
+                                        onChange={() =>
+                                            setSelectedCategories((prev) =>
+                                                toggleArrayValue(prev, item)
+                                            )
+                                        }
                                     />
                                     {item}
                                 </label>
                             ))}
                         </div>
 
-                        <div className="mt-8">
-                            <h4 className="font-semibold mb-3 text-[#007E5B]">Status Laporan</h4>
-                            <div className="space-y-3 text-sm text-gray-700">
-                                {['Menunggu', 'Diproses', 'Selesai'].map((status) => (
-                                    <label key={status} className="flex items-center gap-3">
-                                        <input
-                                            type="checkbox"
-                                            className="accent-[#007E5B]"
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setSelectedStatuses([...selectedStatuses, status]);
-                                                } else {
-                                                    setSelectedStatuses(
-                                                        selectedStatuses.filter((s) => s !== status)
-                                                    );
-                                                }
-                                            }}
-                                        />
-                                        {status}
-                                    </label>
-                                ))}
-                            </div>
+                        {/* STATUS */}
+                        <div className='text-neutral-500'>
+                            <h4 className="font-semibold mb-3">Status Laporan</h4>
+                            {['Sedang Ditinjau', 'Diproses', 'Selesai'].map((status) => (
+                                <label key={status} className="flex items-center gap-3 mb-2">
+                                    <input
+                                        type="checkbox"
+                                        className="accent-[#007E5B]"
+                                        checked={selectedStatuses.includes(status)}
+                                        onChange={() =>
+                                            setSelectedStatuses((prev) =>
+                                                toggleArrayValue(prev, status)
+                                            )
+                                        }
+                                    />
+                                    {status}
+                                </label>
+                            ))}
                         </div>
                     </aside>
 
-                    {/* LIST LAPORAN */}
+                    {/* ================= LIST ================= */}
                     <section className="lg:col-span-3">
                         <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-lg font-semibold text-[#007E5B]">Laporan Terbaru</h3>
-                            <select className="border rounded-lg px-3 py-2 text-sm text-gray-700"
-                                onChange={(e) => setSort(e.target.value)}>
+                            <h3 className="font-semibold text-lg text-[#007E5B]">
+                                Daftar Laporan
+                            </h3>
+
+                            <select
+                                className="border rounded-lg px-3 py-2 text-sm"
+                                onChange={(e) => setSort(e.target.value)}
+                            >
                                 <option value="newest">Terbaru</option>
                                 <option value="oldest">Terlama</option>
                                 <option value="done">Status Selesai</option>
                             </select>
                         </div>
+
+                        {sortedReports.length === 0 && (
+                            <p className="text-gray-500">
+                                Tidak ada laporan yang sesuai.
+                            </p>
+                        )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {sortedReports.map((r) => (
@@ -207,19 +200,21 @@ const page = () => {
                                     className="border rounded-2xl p-6 hover:shadow-md transition"
                                 >
                                     <div className="flex justify-between mb-2">
-                                        <h3 className="font-semibold text-lg">{r.title}</h3>
+                                        <h3 className="font-semibold text-gray-800">{r.title}</h3>
                                         <span className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
                                             {r.status}
                                         </span>
                                     </div>
 
-                                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                                    <p className="text-sm text-gray-600 line-clamp-2 mb-3">
                                         {r.description}
                                     </p>
 
-                                    <div className="flex justify-between text-xs text-gray-500">
-                                        <span>{r.location?.address}</span>
-                                        <span>{new Date(r.createdAt).toLocaleDateString()}</span>
+                                    <div className="text-xs text-gray-500 flex justify-between">
+                                        <span>{r.location?.address || "-"}</span>
+                                        <span>
+                                            {new Date(r.createdAt).toLocaleDateString("id-ID")}
+                                        </span>
                                     </div>
                                 </Link>
                             ))}
@@ -233,4 +228,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

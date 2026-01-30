@@ -9,7 +9,7 @@ export async function GET(req, { params }) {
 
         const report = await db
             .collection("reports")
-            .findOne({ _id: new ObjectId(params.id) });
+            .findOne({ id: params.id });
 
         if (!report) {
             return NextResponse.json(

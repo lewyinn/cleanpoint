@@ -25,7 +25,7 @@ const Page = () => {
         let fields = []
 
         if (step === 1) fields = ['nama', 'email', 'phone']
-        if (step === 2) fields = ['kategori', 'judul', 'deskripsi']
+        if (step === 2) fields = ['kategori', 'judul', 'deskripsi', 'alamat']
         if (step === 3) fields = ['bukti']
 
         const valid = await trigger(fields)
@@ -52,6 +52,7 @@ const Page = () => {
             formData.append('category', data.kategori)
             formData.append('title', data.judul)
             formData.append('description', data.deskripsi)
+            formData.append('address', data.alamat)
             formData.append('image', data.bukti[0])
 
             const res = await fetch('/api/reports', {
@@ -195,6 +196,12 @@ const Page = () => {
                                             className="input mb-4 h-28"
                                         />
 
+                                        <input
+                                            {...register('alamat', { required: true })}
+                                            placeholder="Alamat Kejadian (contoh: Jl Sudirman, Jakarta)"
+                                            className="input mb-4"
+                                        />
+
                                         <div className="flex justify-between">
                                             <button onClick={prevStep} className="btn-secondary">
                                                 <ArrowLeft size={18} /> Kembali
@@ -292,7 +299,6 @@ const Page = () => {
                                         </div>
                                     </motion.div>
                                 )}
-
 
                             </AnimatePresence>
                         </div>
