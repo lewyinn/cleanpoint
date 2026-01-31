@@ -7,7 +7,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const Page = () => {
-    const [reports, setReports] = useState([])
+    const [reports, setReports] = useState([]) // Pastikan default adalah array
     const [query, setQuery] = useState("")
     const [selectedCategories, setSelectedCategories] = useState([])
     const [selectedStatuses, setSelectedStatuses] = useState([])
@@ -18,6 +18,17 @@ const Page = () => {
         arr.includes(value)
             ? arr.filter((v) => v !== value)
             : [...arr, value]
+
+    // ================= FETCH =================
+    useEffect(() => {
+        fetch("/api/reports")
+            .then(res => res.json())
+            .then(data => {
+                // Pastikan data yang masuk adalah array
+                setReports(Array.isArray(data) ? data : [])
+            })
+            .catch(err => console.error("Fetch error:", err))
+    }, [])
 
     // ================= FILTER =================
     const filteredReports = reports.filter((r) => {
@@ -50,34 +61,24 @@ const Page = () => {
         return 0
     })
 
-    // ================= FETCH =================
-    useEffect(() => {
-        fetch("/api/reports")
-            .then(res => res.json())
-            .then(setReports)
-    }, [])
-
     return (
         <main className="min-h-screen bg-white">
             <Navbar />
 
-            {/* ================= HEADER ================= */}
+            {/* HEADER - Tetap Sama */}
             <section id="home" className="pt-24 md:pt-44 pb-12 md:pb-20 px-4 sm:px-6 lg:px-8 bg-white"> 
                 <div className="max-w-7xl mx-auto"> 
                     <section className="flex flex-col bg-white"> 
-                        {/* Kembali */} 
                         <div className="flex items-start mb-8"> 
                             <Link href="/" className="btn-primary flex items-center gap-2"> 
                                 <ArrowLeft size={18} /> Kembali ke Halaman Utama 
                             </Link> 
                         </div> 
-                        {/* Badge */} 
                         <div className="flex justify-center mb-6"> 
                             <span className="px-4 py-2 border border-black rounded-full text-sm text-black"> 
                                 Cari & Pantau Laporan Anda 
                             </span> 
                         </div> 
-                        {/* Main Heading */} 
                         <div className="flex flex-col justify-center items-center"> 
                             <div className="text-center mb-2 max-w-5xl"> 
                                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-[#007E5B] mb-4"> 
@@ -86,16 +87,14 @@ const Page = () => {
                                 </h1> 
                             </div> 
                         </div> 
-                        {/* Description */} 
                         <p className="text-center text-gray-600 max-w-4xl mx-auto mb-8 text-base md:text-xl leading-relaxed"> 
                             Gunakan fitur pencarian ini untuk memantau laporan yang telah Anda kirim atau melihat laporan warga lainnya.
-                            Dengan sistem yang transparan, Anda dapat mengetahui status terbaru dari setiap laporan lingkungan secara real-time.
                         </p> 
                     </section> 
                 </div> 
             </section>
 
-            {/* ================= SEARCH ================= */}
+            {/* SEARCH */}
             <section className="px-4 mb-10">
                 <div className="max-w-7xl mx-auto">
                     <input
@@ -107,114 +106,63 @@ const Page = () => {
                 </div>
             </section>
 
-            {/* ================= CONTENT ================= */}
+            {/* CONTENT */}
             <section className="px-4 pb-20">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
-
-                    {/* ================= FILTER ================= */}
-                    <aside className="lg:col-span-1 border rounded-2xl p-6">
+                    {/* ASIDE / FILTER */}
+                    <aside className="lg:col-span-1 border rounded-2xl p-6 h-fit">
                         <div className="flex justify-between mb-4">
-                            <h3 className="font-semibold text-lg text-[#007E5B]">
-                                Filter
-                            </h3>
-                            <button
-                                onClick={() => {
-                                    setSelectedCategories([])
-                                    setSelectedStatuses([])
-                                }}
-                                className="text-sm text-[#007E5B] hover:underline"
-                            >
-                                Reset
-                            </button>
+                            <h3 className="font-semibold text-lg text-[#007E5B]">Filter</h3>
+                            <button onClick={() => { setSelectedCategories([]); setSelectedStatuses([]); }} className="text-sm text-[#007E5B] hover:underline">Reset</button>
                         </div>
 
-                        {/* KATEGORI */}
                         <div className="mb-6 text-neutral-500">
                             <h4 className="font-semibold mb-3">Jenis Masalah</h4>
                             {['Sampah', 'Pencemaran', 'Drainase'].map((item) => (
-                                <label key={item} className="flex items-center gap-3 mb-2">
-                                    <input
-                                        type="checkbox"
-                                        className="accent-[#007E5B]"
-                                        checked={selectedCategories.includes(item)}
-                                        onChange={() =>
-                                            setSelectedCategories((prev) =>
-                                                toggleArrayValue(prev, item)
-                                            )
-                                        }
-                                    />
+                                <label key={item} className="flex items-center gap-3 mb-2 cursor-pointer">
+                                    <input type="checkbox" className="accent-[#007E5B]" checked={selectedCategories.includes(item)} onChange={() => setSelectedCategories((prev) => toggleArrayValue(prev, item))} />
                                     {item}
                                 </label>
                             ))}
                         </div>
 
-                        {/* STATUS */}
                         <div className='text-neutral-500'>
                             <h4 className="font-semibold mb-3">Status Laporan</h4>
-                            {['Sedang Ditinjau', 'Diproses', 'Selesai'].map((status) => (
-                                <label key={status} className="flex items-center gap-3 mb-2">
-                                    <input
-                                        type="checkbox"
-                                        className="accent-[#007E5B]"
-                                        checked={selectedStatuses.includes(status)}
-                                        onChange={() =>
-                                            setSelectedStatuses((prev) =>
-                                                toggleArrayValue(prev, status)
-                                            )
-                                        }
-                                    />
+                            {['Ditinjau', 'Diproses', 'Selesai'].map((status) => (
+                                <label key={status} className="flex items-center gap-3 mb-2 cursor-pointer">
+                                    <input type="checkbox" className="accent-[#007E5B]" checked={selectedStatuses.includes(status)} onChange={() => setSelectedStatuses((prev) => toggleArrayValue(prev, status))} />
                                     {status}
                                 </label>
                             ))}
                         </div>
                     </aside>
 
-                    {/* ================= LIST ================= */}
+                    {/* LIST */}
                     <section className="lg:col-span-3">
                         <div className="flex justify-between items-center mb-6">
-                            <h3 className="font-semibold text-lg text-[#007E5B]">
-                                Daftar Laporan
-                            </h3>
-
-                            <select
-                                className="border rounded-lg px-3 py-2 text-sm"
-                                onChange={(e) => setSort(e.target.value)}
-                            >
+                            <h3 className="font-semibold text-lg text-[#007E5B]">Daftar Laporan</h3>
+                            <select className="border rounded-lg px-3 py-2 text-sm" onChange={(e) => setSort(e.target.value)}>
                                 <option value="newest">Terbaru</option>
                                 <option value="oldest">Terlama</option>
                                 <option value="done">Status Selesai</option>
                             </select>
                         </div>
 
-                        {sortedReports.length === 0 && (
-                            <p className="text-gray-500">
-                                Tidak ada laporan yang sesuai.
-                            </p>
-                        )}
+                        {sortedReports.length === 0 && <p className="text-gray-500">Tidak ada laporan yang sesuai.</p>}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {sortedReports.map((r) => (
-                                <Link
-                                    href={`/laporan/${r._id}`}
-                                    key={r._id}
-                                    className="border rounded-2xl p-6 hover:shadow-md transition"
-                                >
+                                <Link href={`/laporan/${r._id}`} key={r._id} className="border rounded-2xl p-6 hover:shadow-md transition">
                                     <div className="flex justify-between mb-2">
                                         <h3 className="font-semibold text-gray-800">{r.title}</h3>
-                                        <span className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                                        <span className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 h-fit">
                                             {r.status}
                                         </span>
                                     </div>
-
-                                    <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                                        {r.description}
-                                    </p>
-
+                                    <p className="text-sm text-gray-600 line-clamp-2 mb-3">{r.description}</p>
                                     <div className="text-xs text-gray-500 flex justify-between">
                                         <span>{r.location?.address || "-"}</span>
-                                        <span>
-                                            {new Date(r.createdAt).toLocaleDateString("id-ID")}
-                                        </span>
+                                        <span>{new Date(r.createdAt).toLocaleDateString("id-ID")}</span>
                                     </div>
                                 </Link>
                             ))}
@@ -222,7 +170,6 @@ const Page = () => {
                     </section>
                 </div>
             </section>
-
             <Footer />
         </main>
     )
