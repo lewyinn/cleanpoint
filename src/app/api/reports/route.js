@@ -1,15 +1,34 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
-import { writeFile } from "fs/promises";
-import path from "path";
+import cloudinary from "@/lib/cloudinary";
 
 export async function POST(req) {
     try {
         const client = await clientPromise;
         const db = client.db("lewyin");
-
         const formData = await req.formData();
 
+        // 1. Image Processing
+        let imageUrl = "";
+        const image = formData.get("image");
+        
+        if (image && image.size > 0) {
+            const bytes = await image.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+
+            const uploadResult = await new Promise((resolve, reject) => {
+                cloudinary.uploader.upload_stream(
+                    {
+                        folder: "laporan_lingkungan",
+                        transformation: [{ width: 1000, quality: "auto", fetch_format: "webp" }],
+                    },
+                    (error, result) => (error ? reject(error) : resolve(result))
+                ).end(buffer);
+            });
+            imageUrl = uploadResult.secure_url;
+        }
+
+        // 2. Construct Data
         const report = {
             reporter: {
                 name: formData.get("name"),
@@ -19,38 +38,17 @@ export async function POST(req) {
             category: formData.get("category"),
             title: formData.get("title"),
             description: formData.get("description"),
-            location: {
-                address: formData.get("address"),
-            },
-            status: "Sedang Ditinjau",
+            location: { address: formData.get("address") },
+            imageUrl,
+            status: "Ditinjau",
             createdAt: new Date(),
         };
 
-        // ===== IMAGE =====
-        const image = formData.get("image");
-        if (image) {
-            const bytes = await image.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-
-            const filename = `${Date.now()}-${image.name.replace(/\s/g, "")}`;
-            const uploadPath = path.join(process.cwd(), "public/uploads", filename);
-
-            await writeFile(uploadPath, buffer);
-            report.imageUrl = `/uploads/${filename}`;
-        }
-
         const result = await db.collection("reports").insertOne(report);
 
-        return NextResponse.json({
-            success: true,
-            reportId: result.insertedId,
-        });
+        return NextResponse.json({ success: true, reportId: result.insertedId }, { status: 201 });
     } catch (error) {
-        console.error("API ERROR:", error);
-        return NextResponse.json(
-            { message: "Failed to submit report" },
-            { status: 500 }
-        );
+        return NextResponse.json({ message: error.message || "Server Error" }, { status: 500 });
     }
 }
 

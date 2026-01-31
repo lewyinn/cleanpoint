@@ -1,119 +1,84 @@
 "use client";
 
-import { Link } from 'react-scroll';
+import { Link as ScrollLink } from 'react-scroll';
 import NextLink from "next/link";
 import Logo from '../../../public/assets/Logo.png';
 import Image from 'next/image';
+import { Instagram, Github, Linkedin, Heart } from 'lucide-react';
 
 export default function Footer() {
     return (
-        <footer className="bg-gray-900 text-white">
+        <footer className="bg-gray-900 text-white border-t border-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-                    {/* CleanPoint Info */}
-                    <div>
-                        <NextLink href='/' className="flex items-center space-x-2 mb-4">
-                            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-                                <Image src={Logo.src} width={24} height={24} alt="CleanPoint Logo" className="w-6 h-6"/>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+                    
+                    {/* Kolom 1: CleanPoint Info & Sosmed Kamu */}
+                    <div className="md:col-span-2 space-y-6">
+                        <NextLink href='/' className="flex items-center space-x-2 group">
+                            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center group-hover:rotate-6 transition-transform duration-300">
+                                <Image src={Logo} width={28} height={28} alt="CleanPoint Logo" className="w-7 h-7"/>
                             </div>
-                            <span className="text-xl font-bold">CleanPoint</span>
+                            <span className="text-2xl font-bold tracking-tight">CleanPoint</span>
                         </NextLink>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                            CleanPoint adalah platform digital inovatif untuk melaporkan masalah lingkungan secara cepat dan mudah.
+                        <p className="text-gray-400 text-base leading-relaxed max-w-xl">
+                            CleanPoint adalah platform digital inovatif untuk melaporkan masalah lingkungan secara cepat dan transparan. Bersama Moch Ridho Kurniawan, mari wujudkan masa depan yang lebih hijau.
                         </p>
+                        <div className="flex space-x-4 pt-2">
+                            <a href="https://instagram.com/ridhokurnwnn" target="_blank" rel="noopener noreferrer" 
+                               className="w-11 h-11 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:bg-emerald-500 hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-lg">
+                                <Instagram size={22} />
+                            </a>
+                            <a href="https://github.com/lewyinn" target="_blank" rel="noopener noreferrer" 
+                               className="w-11 h-11 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-700 hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-lg">
+                                <Github size={22} />
+                            </a>
+                            <a href="https://linkedin.com/in/moch-ridho-kurniawan" target="_blank" rel="noopener noreferrer" 
+                               className="w-11 h-11 bg-gray-800 rounded-xl flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-lg">
+                                <Linkedin size={22} />
+                            </a>
+                        </div>
                     </div>
 
-                    {/* Navigasi Cepat */}
-                    <div>
-                        <h3 className="font-semibold text-lg mb-4">Navigasi Cepat</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li>
-                                <Link to='home' 
-                                    smooth
-                                    spy offset={-800} duration={600} activeClass='active'
-                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
-                                    Beranda
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='works' 
-                                    smooth
-                                    spy offset={-800} duration={600} activeClass='active'
-                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
-                                    How It Works
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='impact' 
-                                    smooth
-                                    spy offset={-800} duration={600} activeClass='active'
-                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
-                                    Impact Real
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to='benefits' 
-                                    smooth
-                                    spy offset={-800} duration={600} activeClass='active'
-                                    className="text-gray-400 hover:text-emerald-400 transition-colors cursor-pointer">
-                                    Benefits
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Bantuan & Informasi */}
-                    <div>
-                        <h3 className="font-semibold text-lg mb-4">Bantuan & Informasi</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li>
-                                <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">
-                                    FAQ
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">
-                                    Panduan Pengguna
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">
-                                    Syarat & Ketentuan
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors">
-                                    Kebijakan Privasi
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Hubungi Kami */}
-                    <div>
-                        <h3 className="font-semibold text-lg mb-4">Hubungi Kami</h3>
-                        <ul className="space-y-3 text-sm">
-                            <li className="flex items-start space-x-3">
-                                <svg className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                                <span className="text-gray-400">support@cleanpoint.id</span>
-                            </li>
-                            <li className="flex items-start space-x-3">
-                                <svg className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                </svg>
-                                <span className="text-gray-400">+62 123 456 789</span>
-                            </li>
-                        </ul>
+                    {/* Kolom 2: Navigasi Cepat */}
+                    <div className="flex flex-col md:items-end">
+                        <div className="w-full md:w-40">
+                            <h3 className="text-sm font-bold uppercase tracking-widest text-emerald-500 mb-6">Navigasi</h3>
+                            <ul className="space-y-4 text-sm font-medium">
+                                {['home', 'works', 'impact', 'benefits'].map((item) => (
+                                    <li key={item}>
+                                        <ScrollLink 
+                                            to={item} 
+                                            smooth spy offset={-100} duration={600}
+                                            className="text-gray-400 hover:text-white transition-colors cursor-pointer capitalize flex items-center group"
+                                        >
+                                            <span className="w-0 group-hover:w-4 h-0.5 bg-emerald-500 transition-all duration-300 mr-0 group-hover:mr-2"></span>
+                                            {item === 'home' ? 'Beranda' : item.replace('-', ' ')}
+                                        </ScrollLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
-                <div className="border-t border-gray-800 mt-12 pt-8">
-                    <p className="text-center text-gray-500 text-sm">
-                        © 2026 CleanPoint. All rights reserved
+                {/* Bottom Bar & Credits */}
+                <div className="border-t border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <p className="text-gray-500 text-xs tracking-widest font-bold">
+                        © 2026 CLEANPOINT. ALL RIGHTS RESERVED.
                     </p>
+                    <div className="flex items-center text-sm text-gray-400">
+                        <span className="font-medium">Made with</span>
+                        <Heart size={14} className="mx-2 text-rose-500 fill-rose-500 animate-pulse" />
+                        <span className="mr-1.5">by</span>
+                        <a 
+                            href="https://github.com/lewyinn" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-white hover:text-emerald-400 transition-all font-black border-b border-transparent hover:border-emerald-400 pb-0.5"
+                        >
+                            Moch Ridho Kurniawan (Lewyinn)
+                        </a>
+                    </div>
                 </div>
             </div>
         </footer>
