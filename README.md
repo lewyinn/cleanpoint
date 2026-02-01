@@ -1,7 +1,7 @@
 # 🌿 CleanPoint - Bersama Jaga Lingkungan
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-blue?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-blue?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
@@ -44,35 +44,32 @@ Di banyak daerah, penanganan masalah lingkungan seperti tumpukan sampah liar dan
    ```bash
    git clone [https://github.com/lewyinn/cleanpoint.git](https://github.com/lewyinn/cleanpoint.git)
    cd cleanpoint
-
-```
+   ```
 
 2. **Install Dependensi**
-```bash
-npm install
-
-```
-
+   ```bash
+   npm install
+   ```
 
 3. **Konfigurasi Environment Variable**
-Buat file `.env.local` di root folder dan isi sebagai berikut:
-```env
-MONGODB_URI=your_mongodb_connection_string
-NEXTAUTH_SECRET=your_secret_key
-NEXTAUTH_URL=http://localhost:3000
+   Buat file `.env.local` di root folder dan isi sebagai berikut:
+   ```env
+   MONGODB_URI=your_mongodb_connection_string
+   NEXTAUTH_SECRET=your_secret_key
+   NEXTAUTH_URL=http://localhost:3000
 
-CLOUDINARY_CLOUD_NAME=your_name
-CLOUDINARY_API_KEY=your_key
-CLOUDINARY_API_SECRET=your_secret
+   CLOUDINARY_CLOUD_NAME=your_name
+   CLOUDINARY_API_KEY=your_key
+   CLOUDINARY_API_SECRET=your_secret
 
-```
+   ```
 
 
 4. **Jalankan Aplikasi**
-```bash
-npm run dev
+   ```bash
+   npm run dev
 
-```
+   ```
 
 
 Buka [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) di browser Anda.
