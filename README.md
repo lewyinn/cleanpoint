@@ -29,7 +29,7 @@ Di banyak daerah, penanganan masalah lingkungan seperti tumpukan sampah liar dan
 - **Integrasi Data**: Seluruh data tersimpan aman di MongoDB.
 
 ## 🛠️ Stack Teknologi
-- **Frontend**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Frontend**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **State Management**: React Context API
 - **Authentication**: [NextAuth.js](https://next-auth.js.org/)
