@@ -1,13 +1,11 @@
 # 🌿 CleanPoint - Bersama Jaga Lingkungan
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-blue?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 **CleanPoint** adalah platform digital inovatif yang dirancang untuk menjembatani komunikasi antara warga dan instansi terkait dalam menangani masalah lingkungan secara *real-time*, cepat, dan transparan.
-
-Proyek ini dikembangkan oleh **Tim CORTIS** untuk ajang **UI/UX WEB DESIGN COMPETITION AMIKOM Surakarta (IT-CAS) 2025**.
 
 ---
 
