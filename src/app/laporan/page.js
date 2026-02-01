@@ -13,24 +13,33 @@ const Page = () => {
     const [selectedStatuses, setSelectedStatuses] = useState([])
     const [sort, setSort] = useState("newest")
 
-    // ================= HELPER =================
     const toggleArrayValue = (arr, value) =>
         arr.includes(value)
             ? arr.filter((v) => v !== value)
             : [...arr, value]
 
-    // ================= FETCH =================
+    const getStatusStyle = (status) => {
+        switch(status) {
+            case "Selesai" :
+                return "bg-green-100 text-green-700 border-green-200";
+            case "Diproses" :
+                return "bg-blue-100 text-blue-700 border-blue-200";
+            case "Ditinjau" :
+                return "bg-yellow-100 text-yellow-700 border-yellow-200";
+            default :
+                return "bg-gray-100 text-gray-700 border-gray-200";
+        }
+    }
+
     useEffect(() => {
         fetch("/api/reports")
             .then(res => res.json())
             .then(data => {
-                // Pastikan data yang masuk adalah array
                 setReports(Array.isArray(data) ? data : [])
             })
             .catch(err => console.error("Fetch error:", err))
     }, [])
 
-    // ================= FILTER =================
     const filteredReports = reports.filter((r) => {
         const matchQuery =
             r.title?.toLowerCase().includes(query.toLowerCase()) ||
@@ -120,7 +129,7 @@ const Page = () => {
                             <h4 className="font-semibold mb-3">Jenis Masalah</h4>
                             {['Sampah', 'Pencemaran', 'Drainase'].map((item) => (
                                 <label key={item} className="flex items-center gap-3 mb-2 cursor-pointer">
-                                    <input type="checkbox" className="accent-[#007E5B]" checked={selectedCategories.includes(item)} onChange={() => setSelectedCategories((prev) => toggleArrayValue(prev, item))} />
+                                    <input type="checkbox" className="w-4 h-4 accent-[#007E5B]" checked={selectedCategories.includes(item)} onChange={() => setSelectedCategories((prev) => toggleArrayValue(prev, item))} />
                                     {item}
                                 </label>
                             ))}
@@ -130,7 +139,7 @@ const Page = () => {
                             <h4 className="font-semibold mb-3">Status Laporan</h4>
                             {['Ditinjau', 'Diproses', 'Selesai'].map((status) => (
                                 <label key={status} className="flex items-center gap-3 mb-2 cursor-pointer">
-                                    <input type="checkbox" className="accent-[#007E5B]" checked={selectedStatuses.includes(status)} onChange={() => setSelectedStatuses((prev) => toggleArrayValue(prev, status))} />
+                                    <input type="checkbox" className="w-4 h-4accent-[#007E5B]" checked={selectedStatuses.includes(status)} onChange={() => setSelectedStatuses((prev) => toggleArrayValue(prev, status))} />
                                     {status}
                                 </label>
                             ))}
@@ -153,9 +162,9 @@ const Page = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {sortedReports.map((r) => (
                                 <Link href={`/laporan/${r._id}`} key={r._id} className="border rounded-2xl p-6 hover:shadow-md transition">
-                                    <div className="flex justify-between mb-2">
+                                    <div className="flex justify-between items-center mb-2">
                                         <h3 className="font-semibold text-gray-800">{r.title}</h3>
-                                        <span className="text-xs px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 h-fit">
+                                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${getStatusStyle(r.status)}`}>
                                             {r.status}
                                         </span>
                                     </div>
